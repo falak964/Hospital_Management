@@ -5,31 +5,24 @@ from PIL import ImageTk, Image
 import sqlite3
 import page_after_login
 
-# Base directory for the project
+# Base directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 IMAGES_DIR = os.path.join(BASE_DIR, "images")
 DB_PATH = os.path.join(BASE_DIR, "database1.db")
 
-# Helper function to safely load images
+#load images
 def load_image(filename):
     path = os.path.join(IMAGES_DIR, filename)
     if not os.path.exists(path):
         ms.showerror("Missing Image", f"Image file not found:\n{path}")
         return None
     return Image.open(path)
-
-# Function to initialize database
+#Function
 def init_db():
     with sqlite3.connect(DB_PATH) as db:
         c = db.cursor()
         # Create table if not exists
-        c.execute('''
-        CREATE TABLE IF NOT EXISTS user (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT NOT NULL UNIQUE,
-            password TEXT NOT NULL
-        )
-        ''')
+        c.execute('''CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT NOT NULL UNIQUE,password TEXT NOT NULL ) ''')
         # Insert default admin if table is empty
         c.execute("SELECT COUNT(*) FROM user")
         if c.fetchone()[0] == 0:
@@ -38,7 +31,7 @@ def init_db():
 
 class LoginPage:
     def __init__(self, window):
-        init_db()  # Ensure DB and table exist before anything
+        init_db() 
 
         def validate():
             username1 = self.username_entry.get().strip()
@@ -65,7 +58,7 @@ class LoginPage:
         self.window.state('zoomed')
         self.window.title('Login Page')
 
-        # Background image
+        #background image
         bg_img = load_image('background1.png')
         if bg_img:
             self.bg_frame = bg_img
@@ -74,21 +67,18 @@ class LoginPage:
             self.bg_panel.image = photo
             self.bg_panel.pack(fill='both', expand='yes')
 
-        # Login frame
+        # Login
         self.lgn_frame = Frame(self.window, bg='#040405', width=950, height=600)
         self.lgn_frame.place(x=200, y=70)
 
-        # Heading
-        self.heading = Label(self.lgn_frame, text="WELCOME", font=('yu gothic ui', 25, "bold"),
-                             bg="#040405", fg='white', bd=5, relief=FLAT)
+        #heading
+        self.heading = Label(self.lgn_frame, text="WELCOME", font=('yu gothic ui', 25, "bold"), bg="#040405", fg='white', bd=5, relief=FLAT)
         self.heading.place(x=80, y=30, width=300, height=30)
-
-        # Side image
+        #Side image
         side_img = load_image('vector.png')
         if side_img:
             photo = ImageTk.PhotoImage(side_img)
-            self.side_image_label = Label(self.lgn_frame, image=photo, bg='#040405')
-            self.side_image_label.image = photo
+            self.side_image_label = Label(self.lgn_frame, image=photo, bg='#040405')self.side_image_label.image = photo
             self.side_image_label.place(x=5, y=100)
 
         # Sign in image
@@ -104,13 +94,12 @@ class LoginPage:
                                    font=("yu gothic ui", 17, "bold"))
         self.sign_in_label.place(x=650, y=240)
 
-        # Username label + entry
+        # Username label
         self.username_label = Label(self.lgn_frame, text="Username", bg="#040405", fg="#4f4e4d",
                                     font=("yu gothic ui", 13, "bold"))
         self.username_label.place(x=550, y=300)
 
-        self.username_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#040405",
-                                    fg="#6b6a69", font=("yu gothic ui ", 12, "bold"),
+        self.username_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#040405",fg="#6b6a69", font=("yu gothic ui ", 12, "bold"),
                                     insertbackground='#6b6a69')
         self.username_entry.place(x=580, y=335, width=270)
 
@@ -118,7 +107,7 @@ class LoginPage:
                                     bg="#bdb9b1", highlightthickness=0)
         self.username_line.place(x=550, y=359)
 
-        # Username icon
+        #username icon
         username_icon = load_image('username_icon.png')
         if username_icon:
             photo = ImageTk.PhotoImage(username_icon)
@@ -139,13 +128,13 @@ class LoginPage:
                                 fg='white', command=validate)
             self.login.place(x=20, y=10)
 
-        # Forgot password
+        #Forgot password
         self.forgot_button = Button(self.lgn_frame, text="Forgot Password ?",
                                     font=("yu gothic ui", 13, "bold underline"), fg="white", relief=FLAT,
                                     activebackground="#040405", borderwidth=0, background="#040405", cursor="hand2")
         self.forgot_button.place(x=630, y=510)
 
-        # Sign up label + button
+        # Sign up label
         self.sign_label = Label(self.lgn_frame, text='No account yet?',
                                 font=("yu gothic ui", 11, "bold"), relief=FLAT,
                                 borderwidth=0, background="#040405", fg='white')
@@ -210,3 +199,4 @@ def page():
     window = Tk()
     LoginPage(window)
     window.mainloop()
+
