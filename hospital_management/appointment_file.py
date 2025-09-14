@@ -3,33 +3,23 @@ from tkinter import *
 import tkinter.messagebox as mb
 from tkinter import ttk
 import sqlite3
-from tkcalendar import DateEntry  # ✅ Needed for date selection
+from tkcalendar import DateEntry
 import page_after_login
 
 def book_appointment():
     global tree
     global name_strvar, email_strvar, contact_strvar, gender_strvar, dob, stream_strvar
 
-    # Fonts
+    #font
     headlabelfont = ("Noto Sans CJK TC", 15, 'bold')
     labelfont = ('Garamond', 14)
     entryfont = ('Garamond', 12)
 
-    # Database
+    #Database
     connector = sqlite3.connect('Appointment.db')  # ✅ fixed typo
-    connector.execute("""
-        CREATE TABLE IF NOT EXISTS APPOINTMENT_MANAGEMENT (
-            PATIENT_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            NAME TEXT,
-            EMAIL TEXT,
-            PHONE_NO TEXT,
-            GENDER TEXT,
-            DOB TEXT,
-            STREAM TEXT
-        )
-    """)
+    connector.execute("""CREATE TABLE IF NOT EXISTS APPOINTMENT_MANAGEMENT (PATIENT_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,NAME TEXT,EMAIL TEXT,PHONE_NO TEXT,GENDER TEXT,DOB TEXT,STREAM TEXT)""")
 
-    # Functions
+    #Functions
     def reset_fields():
         for var in [name_strvar, email_strvar, contact_strvar, gender_strvar, stream_strvar]:
             var.set('')
@@ -101,14 +91,14 @@ def book_appointment():
     main.title('APPOINTMENT MANAGEMENT SYSTEM')
     main.state('zoomed')
 
-    # Variables
+    #Variable
     name_strvar = StringVar()
     email_strvar = StringVar()
     contact_strvar = StringVar()
     gender_strvar = StringVar()
     stream_strvar = StringVar()
 
-    # Layout
+    #Layout
     Label(main, text="SIDDHESHWAR CLINIC MANAGEMENT SYSTEM", font=headlabelfont, bg='SpringGreen').pack(side=TOP, fill=X)
 
     left_frame = Frame(main, bg='MediumSpringGreen')
@@ -120,7 +110,7 @@ def book_appointment():
     right_frame = Frame(main, bg="Gray35")
     right_frame.place(relx=0.4, y=30, relheight=1, relwidth=0.6)
 
-    # Left frame fields
+    #left fram
     Label(left_frame, text="Name", font=labelfont, bg='MediumSpringGreen').pack(pady=10)
     Entry(left_frame, textvariable=name_strvar, font=entryfont).pack()
 
@@ -142,14 +132,14 @@ def book_appointment():
 
     Button(left_frame, text='Book Appointment', font=labelfont, command=add_record).pack(pady=20)
 
-    # Center frame
+    #Center frame
     Button(center_frame, text='Cancel Appointment', font=labelfont, command=remove_record).pack(pady=10)
     Button(center_frame, text='View Appointment', font=labelfont, command=view_record).pack(pady=10)
     Button(center_frame, text='Reset Fields', font=labelfont, command=reset_fields).pack(pady=10)
     Button(center_frame, text='Delete All', font=labelfont, command=reset_form).pack(pady=10)
     Button(center_frame, text='Back', font=labelfont, command=back).pack(pady=10)
 
-    # Right frame - Treeview
+    #Right frameTreeview
     Label(right_frame, text='Appointment Record', font=headlabelfont, bg='DarkGreen', fg='LightCyan').pack(side=TOP, fill=X)
 
     tree = ttk.Treeview(right_frame, columns=('Patient ID', 'Name', 'Doctor Name', 'Phone No', 'Gender', 'Date', 'Time'), show='headings')
@@ -160,3 +150,4 @@ def book_appointment():
     display_records()
 
     main.mainloop()
+
