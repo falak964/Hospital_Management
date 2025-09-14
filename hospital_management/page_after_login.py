@@ -27,36 +27,23 @@ def page_after_login():
     window.state('zoomed')
     window.title('Login Page')
 
-     # ========================================================================
-     # ============================background image============================
-     # ========================================================================
+     #background image
     bg_frame = Image.open('images\\hospital1.jpeg')
     photo = ImageTk.PhotoImage(bg_frame)
     bg_panel = Label(window, image=photo)
     bg_panel.image = photo
     bg_panel.pack(fill='both', expand='yes')
 
-            # ====== Login Frame =========================
+            #Login
 
 
     lgn_frame = Frame(window, bg='#150220', width=950, height=600)
-    lgn_frame.place(x=200, y=70)
-
-
-            # ========================================================================
-            # ========================================================
-            # ========================================================================
-
+    lgn_frame.place(x=200, y=70
     txt = "SIDDHESHWAR CLINIC"
-    heading = Label(lgn_frame, text=txt, font=('yu gothic ui', 25, "bold"), bg="#9AECF5",
-                                 fg='black',
-                                 bd=5,
-                                 relief=FLAT)
+    heading = Label(lgn_frame, text=txt, font=('yu gothic ui', 25, "bold"), bg="#9AECF5",fg='black', bd=5,relief=FLAT)
     heading.place(x=80, y=30, width=500, height=45)
 
-            # ========================================================================
-            # ============ Left Side Image ================================================
-            # ========================================================================
+            #left side image
     side_image = Image.open('images\\hospt.png')
     photo = ImageTk.PhotoImage(side_image)
 
@@ -67,12 +54,11 @@ def page_after_login():
     side_image_label.image = photo
     side_image_label.place(x=130, y=150)
 
- 
 
 
-            # ========================================================================
-            # ============================DATA ENTRY ================================
-            # ========================================================================
+    
+
+            #Data Entry
     lgn_button = Image.open('images\\btn1.png')
     photo = ImageTk.PhotoImage(lgn_button)
     lgn_button_label = Label(lgn_frame, image=photo, bg='#150220')
@@ -82,9 +68,7 @@ def page_after_login():
                                 bg='#3047ff', cursor='hand2', activebackground='#3047ff', fg='white',command=addpatients)
     login.place(x=20, y=10)
 
-            # ========================================================================
-            # ============================APPOINTMENT ENTRY ================================
-            # ========================================================================
+            #Appointment entry
     lgn_button = Image.open('images\\btn1.png')
     photo = ImageTk.PhotoImage(lgn_button)
     lgn_button_label = Label(lgn_frame, image=photo, bg='#150220')
@@ -96,9 +80,7 @@ def page_after_login():
 
             
    
-            # ========================================================================
-            # ============================SIGN OUT BUTTON ================================
-            # ========================================================================
+            #Sign out buttons
     lgn_button = Image.open('images\\btn1.png')
     photo = ImageTk.PhotoImage(lgn_button)
     lgn_button_label = Label(lgn_frame, image=photo, bg='#150220')
@@ -111,3 +93,4 @@ def page_after_login():
 
 
     window.mainloop()
+
