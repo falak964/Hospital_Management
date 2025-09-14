@@ -1,4 +1,4 @@
-# pip install pymysql
+# pip 
 import os
 import pymysql
 from tkinter import *
@@ -6,51 +6,31 @@ from tkinter import ttk, messagebox
 import tkinter as tk
 import page_after_login
 
-
 def add_patient():
-    # --- Database connection function ---
+#Database connection
     def connection():
         try:
-            conn = pymysql.connect(
-                host='localhost',
-                user='root',       # Change if needed
-                password='',       # Change if you have a MySQL password
-                database='PATIENTS_DB',
-                port=3306
-            )
+            conn = pymysql.connect(host='localhost',user='root',password='',database='PATIENTS_DB',port=3306 )
             return conn
         except pymysql.MySQLError as e:
             messagebox.showerror("Database Error", f"Connection failed:\n{e}")
             raise
-
-    # --- Ensure DB & table exist ---
+#Ensure DB
     def init_db():
         try:
-            conn = pymysql.connect(
-                host='localhost',
-                user='root',
-                password='',
-                port=3306
-            )
+            conn = pymysql.connect(host='localhost',user='root',password='', port=3306 )
             cursor = conn.cursor()
             cursor.execute("CREATE DATABASE IF NOT EXISTS PATIENTS_DB")
             cursor.execute("USE PATIENTS_DB")
             cursor.execute("""
-                CREATE TABLE IF NOT EXISTS patients (
-                    MOBILE VARCHAR(15) PRIMARY KEY,
-                    NAME VARCHAR(50),
-                    DOB DATE,
-                    HISTORY TEXT,
-                    MEDICINES TEXT
-                )
-            """)
+                CREATE TABLE IF NOT EXISTS patients (MOBILE VARCHAR(15) PRIMARY KEY,NAME VARCHAR(50),DOB DATE,HISTORY TEXT,MEDICINES TEXT) """)
             conn.commit()
             conn.close()
         except pymysql.MySQLError as e:
             messagebox.showerror("Database Init Error", f"Could not initialize DB:\n{e}")
             raise
 
-    # --- Refresh table data ---
+    #Refresh table
     def refreshTable():
         for data in my_tree.get_children():
             my_tree.delete(data)
@@ -58,7 +38,7 @@ def add_patient():
             my_tree.insert('', 'end', values=array, tag="orow")
         my_tree.tag_configure('orow', background='#EEEEEE', font=('Arial', 12))
 
-    # --- Read all patients ---
+    #read all patients
     def read():
         conn = connection()
         cursor = conn.cursor()
@@ -66,13 +46,13 @@ def add_patient():
         results = cursor.fetchall()
         conn.close()
         return results
-
-    # --- Set placeholder ---
+        
+    #Set placeholde
     def setph(word, num):
         vars_list = [ph1, ph2, ph3, ph4, ph5]
         vars_list[num-1].set(word)
 
-    # --- Add patient ---
+    #Add patient
     def add():
         data = (MOBILEEntry.get(), NAMEEntry.get(), DOBEntry.get(), HISTORYEntry.get(), MEDICINESEntry.get())
         if any(x.strip() == "" for x in data):
@@ -81,10 +61,7 @@ def add_patient():
         try:
             conn = connection()
             cursor = conn.cursor()
-            cursor.execute("""
-                INSERT INTO patients (MOBILE, NAME, DOB, HISTORY, MEDICINES)
-                VALUES (%s, %s, %s, %s, %s)
-            """, data)
+            cursor.execute("""INSERT INTO patients (MOBILE, NAME, DOB, HISTORY, MEDICINES)VALUES (%s, %s, %s, %s, %s)""", data)
             conn.commit()
             conn.close()
         except pymysql.IntegrityError:
@@ -93,7 +70,7 @@ def add_patient():
             messagebox.showerror("Database Error", str(e))
         refreshTable()
 
-    # --- Reset all data ---
+    #Reset all data
     def reset():
         if messagebox.askyesno("Warning", "Delete all data?"):
             try:
@@ -106,7 +83,7 @@ def add_patient():
             except pymysql.MySQLError as e:
                 messagebox.showerror("Database Error", str(e))
 
-    # --- Delete selected ---
+    #delete select
     def delete():
         try:
             selected_item = my_tree.selection()[0]
@@ -121,7 +98,7 @@ def add_patient():
         except IndexError:
             messagebox.showwarning("Error", "Please select a row")
 
-    # --- Select row ---
+    #Select row
     def select():
         try:
             selected_item = my_tree.selection()[0]
@@ -130,7 +107,7 @@ def add_patient():
         except IndexError:
             messagebox.showwarning("Error", "Please select a row")
 
-    # --- Search patient ---
+    #Search
     def search():
         data = (MOBILEEntry.get(), NAMEEntry.get(), DOBEntry.get(), HISTORYEntry.get(), MEDICINESEntry.get())
         conn = connection()
@@ -147,7 +124,7 @@ def add_patient():
         else:
             messagebox.showinfo("Info", "No data found")
 
-    # --- Update selected ---
+    #Update selected
     def update():
         try:
             selected_item = my_tree.selection()[0]
@@ -162,32 +139,28 @@ def add_patient():
         try:
             conn = connection()
             cursor = conn.cursor()
-            cursor.execute("""
-                UPDATE patients
-                SET MOBILE=%s, NAME=%s, DOB=%s, HISTORY=%s, MEDICINES=%s
-                WHERE MOBILE=%s
-            """, data)
+            cursor.execute("""UPDATE patientsSET MOBILE=%s, NAME=%s, DOB=%s, HISTORY=%s, MEDICINES=%sWHERE MOBILE=%s """, data)
             conn.commit()
             conn.close()
         except pymysql.MySQLError as e:
             messagebox.showerror("Database Error", str(e))
         refreshTable()
 
-    # --- Back button ---
+    #Back button
     def back():
         root.destroy()
         page_after_login.page_after_login()
 
-    # --- Initialize DB before launching ---
+    #DB
     init_db()
 
-    # --- Main Window ---
+    #M Window
     root = Tk()
     root.title("SIDDHESHWAR CLINIC MANAGEMENT SYSTEM")
     root.state('zoomed')
     my_tree = ttk.Treeview(root)
 
-    # --- Placeholders ---
+    #Placeholders
     ph1, ph2, ph3, ph4, ph5 = (tk.StringVar() for _ in range(5))
 
     Label(root, text="PATIENT DATA MANAGEMENT", font=('Arial Bold', 30)).grid(row=0, column=0, columnspan=8, pady=20)
@@ -202,7 +175,7 @@ def add_patient():
 
     MOBILEEntry, NAMEEntry, DOBEntry, HISTORYEntry, MEDICINESEntry = entries
 
-    # --- Buttons ---
+    #Button
     btns = [
         ("Add", add, "#84F894"),
         ("Update", update, "#84E8F8"),
@@ -215,7 +188,7 @@ def add_patient():
     for i, (txt, cmd, color) in enumerate(btns, start=3):
         Button(root, text=txt, width=10, bd=5, font=('Arial', 15), bg=color, command=cmd).grid(row=i*2-3, column=10, rowspan=2, pady=5)
 
-    # --- Treeview setup ---
+    #treeview
     style = ttk.Style()
     style.configure("Treeview.Heading", font=('Arial Bold', 15))
     my_tree['columns'] = ("Mobile", "Firstname", "Date_of_Birth", "HISTORY", "MEDICINES")
@@ -231,3 +204,4 @@ def add_patient():
 
 if __name__ == "__main__":
     add_patient()
+
