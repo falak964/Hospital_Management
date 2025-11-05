@@ -1,4 +1,3 @@
-# pip 
 import os
 import pymysql
 from tkinter import *
@@ -7,7 +6,6 @@ import tkinter as tk
 import page_after_login
 
 def add_patient():
-#Database connection
     def connection():
         try:
             conn = pymysql.connect(host='localhost',user='root',password='',database='PATIENTS_DB',port=3306 )
@@ -30,7 +28,6 @@ def add_patient():
             messagebox.showerror("Database Init Error", f"Could not initialize DB:\n{e}")
             raise
 
-    #Refresh table
     def refreshTable():
         for data in my_tree.get_children():
             my_tree.delete(data)
@@ -38,7 +35,6 @@ def add_patient():
             my_tree.insert('', 'end', values=array, tag="orow")
         my_tree.tag_configure('orow', background='#EEEEEE', font=('Arial', 12))
 
-    #read all patients
     def read():
         conn = connection()
         cursor = conn.cursor()
@@ -47,7 +43,6 @@ def add_patient():
         conn.close()
         return results
         
-    #Set placeholde
     def setph(word, num):
         vars_list = [ph1, ph2, ph3, ph4, ph5]
         vars_list[num-1].set(word)
@@ -70,7 +65,6 @@ def add_patient():
             messagebox.showerror("Database Error", str(e))
         refreshTable()
 
-    #Reset all data
     def reset():
         if messagebox.askyesno("Warning", "Delete all data?"):
             try:
@@ -204,4 +198,5 @@ def add_patient():
 
 if __name__ == "__main__":
     add_patient()
+
 
